@@ -1,3 +1,4 @@
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -12,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javax.swing.BorderFactory;
 
 class Play extends JPanel {
   final Game game;
@@ -36,6 +38,11 @@ class Play extends JPanel {
     JLabel gameText;
     JLabel mysteryNumber;
     JLabel statusImage;
+    JButton enterButton;
+    JButton continueButton;
+    JTextField inputText;
+    JPanel gridPanel;
+    int random = randomNumber.generateNumber();
 
     playScore = new JLabel(
         "Score: " + scoreFiles.intScore("current_score.txt") + " Games: " + scoreFiles.intScore("num_game.txt"));
@@ -79,6 +86,23 @@ class Play extends JPanel {
     gridPanel.setMaximumSize(new Dimension(260, 50));
     gridPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
     gridPanel.setOpaque(false);
-    this.add(gridPanel);
-  }
-}
+
+    inputText.setFont(new java.awt.Font("MV Boli", java.awt.Font.BOLD, 30));
+    inputText.setForeground(new java.awt.Color(OX62355F));
+    inputText.setHorizontalAlignment(JTextField.CENTER);
+    inputText.setBorder(BorderFactory.createEmptyBorder());
+    inputText.setBackground(new java.awt.Color(253, 233, 180));
+    gridPanel.add(inputText);
+
+    continueButton.setBorder(BorderFactory.createLineBorder(new java.awt.Color(125, 95, 123), 3));
+    continueButton.setBackground(new java.awt.Color(253, 233, 180));
+    continueButton.setForeground(new java.awt.Color(125, 95, 123));
+    continueButton.setFont(new java.awt.Font("MV Boli", java.awt.Font.BOLD, 30));
+    continueButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    continueButton.setAlignmentX(CENTER_ALIGNMENT);
+    continueButton.addActionListener(e -> continueGame(continueButton));
+    add(continueButton);
+
+  private void continueGame(JButton button) {
+      // Add your code here
+    }
