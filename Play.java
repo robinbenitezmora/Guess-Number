@@ -1,12 +1,16 @@
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Menu;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -14,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javax.swing.BorderFactory;
+import java.awt.event.ActionEvent; // Import the ActionEvent class
 
 class Play extends JPanel {
   final Game game;
@@ -81,28 +86,76 @@ class Play extends JPanel {
     statusImage.setBorder(BorderFactory.createEmptyBorder(-10, 0, 15, 0));
     this.add(statusImage);
 
-    JPanel gridPanel = new JPanel();
     gridPanel.setLayout(new GridLayout(2, 5, 10, 10));
     gridPanel.setMaximumSize(new Dimension(260, 50));
     gridPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
     gridPanel.setOpaque(false);
+    this.add(gridPanel);
 
     inputText.setFont(new java.awt.Font("MV Boli", java.awt.Font.BOLD, 30));
-    inputText.setForeground(new java.awt.Color(OX62355F));
+    inputText.setForeground(new java.awt.Color(0X62355F));
     inputText.setHorizontalAlignment(JTextField.CENTER);
     inputText.setBorder(BorderFactory.createEmptyBorder());
     inputText.setBackground(new java.awt.Color(253, 233, 180));
     gridPanel.add(inputText);
 
+    continueButton = new JButton("Continue Playing?");
     continueButton.setBorder(BorderFactory.createLineBorder(new java.awt.Color(125, 95, 123), 3));
     continueButton.setBackground(new java.awt.Color(253, 233, 180));
     continueButton.setForeground(new java.awt.Color(125, 95, 123));
     continueButton.setFont(new java.awt.Font("MV Boli", java.awt.Font.BOLD, 30));
     continueButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
     continueButton.setAlignmentX(CENTER_ALIGNMENT);
-    continueButton.addActionListener(e -> continueGame(continueButton));
-    add(continueButton);
+    continueButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    continueGame(continueButton);
+    this.add(continueButton);
 
-  private void continueGame(JButton button) {
-      // Add your code here
+    JButton backButton1 = new JButton("Back to Menu");
+    backButton1.setBorder(BorderFactory.createLineBorder(new java.awt.Color(125, 95, 123), 3));
+    backButton1.setBackground(new java.awt.Color(253, 233, 180));
+    backButton1.setForeground(new java.awt.Color(0X62355F));
+    backButton1.setFont(new java.awt.Font("MV Boli", java.awt.Font.BOLD, 30));
+    backButton1.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    backButton1.setAlignmentX(CENTER_ALIGNMENT);
+    backButton1.setPreferredSize(new Dimension(200, 50));
+    linkMenu(backButton1);
+    this.add(backButton1);
+
+    // When user click enter button
+    enterButton.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        changeStatus(inputText, mysteryNumber, random, statusImage, gridPanel, continueButton, backButton1);
+      }
+    });
+
+    // When user hits the button key while inputting in the text field
+    // ...
+
+    inputText.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        changeStatus(inputText, mysteryNumber, random, statusImage, gridPanel, continueButton, backButton1);
+      }
+    });
+  } // Close the changeStatus method
+
+  // Define the changeStatus method
+  private void changeStatus(JTextField inputText, JLabel mysteryNumber, int random, JLabel statusImage,
+      JPanel gridPanel, JButton continueButton, JButton backButton1) {
+    // Add your code logic here
+  }
+
+  public void linkMenu(JButton jLabel) {
+      jLabel.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          int dialogResult = JOptionPane.showConfirmDialog(null, "Want to stop the game", "Are you Sure?",
+              JOptionPane.YES_NO_OPTION);
+          if (dialogResult == 0) {
+            scoreFiles.compareScore("high_score.txt", "current_score.txt", "num_game.txt");
+            game.showView(new Menu(game));
+          }
+        }
+      });
     }
