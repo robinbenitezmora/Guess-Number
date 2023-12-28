@@ -1,5 +1,6 @@
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Menu;
 import java.awt.event.MouseAdapter;
@@ -9,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -19,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javax.swing.BorderFactory;
 import java.awt.event.ActionEvent; // Import the ActionEvent class
+import java.awt.Font;
 
 class Play extends JPanel {
   final Game game;
@@ -147,15 +150,78 @@ class Play extends JPanel {
   }
 
   public void linkMenu(JButton jLabel) {
-      jLabel.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          int dialogResult = JOptionPane.showConfirmDialog(null, "Want to stop the game", "Are you Sure?",
-              JOptionPane.YES_NO_OPTION);
-          if (dialogResult == 0) {
-            scoreFiles.compareScore("high_score.txt", "current_score.txt", "num_game.txt");
-            game.showView(new Menu(game));
-          }
+    jLabel.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Want to stop the game", "Are you Sure?",
+            JOptionPane.YES_NO_OPTION);
+        if (dialogResult == 0) {
+          scoreFiles.compareScore("high_score.txt", "current_score.txt", "num_game.txt");
+          game.showView(new Menu(game));
         }
-      });
+      }
+    });
+  }
+
+  public void continueGame(JButton jLabel) {
+    jLabel.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        game.showView(new Play(game));
+      }
+    });
+  }
+
+  @Override
+  protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    g.drawImage(new ImageIcon("background.png").getImage(), 0, 0, null);
+  }
+
+  void changeStatusGame(JTextField input, JLabel mysterynum, int randnum, JLabel status, JPanel gridJPanel,
+      JButton contButton, JButton backButton) {
+    if (String.valueOf(randnum).equals(input.getText())) {
+      status.setText("Correct!!!");
+      status.setFont(new java.awt.Font("MV Boli", Font.BOLD, 30));
+      status.setForeground(new java.awt.Color(253, 233, 180));
+      status.setPreferredSize(new Dimension(200, 50));
+
+      mysterynum.setText(input.getText());
+
+      JComponent gridPanel;
+      gridPanel.setVisible(false);
+
+      contButton.setVisible(true);
+      scoringSystem.scoreAttempt();
+      scoreFiles.write("current_score.txt", scoreFiles.intScore("current_score.txt") + scoringSystem.getScore());
+      scoreFiles.write("num_game.txt", scoreFiles.intScore("num_game.txt") + 1);
+    } else {
+      try {
+        int textToint = Integer.parseInt(input.getText());
+        if (textToint > 10 || textToint < 1) {
+          status.setText("Please input number between 1 and 10");
+          status.setFont(new java.awt.Font("MV Boli", java.awt.Font.BOLD, 30));
+          status.setForeground(new java.awt.Color(253, 233, 180));
+          status.setPreferredSize(new Dimension(200, 50));
+        } else if (textToint > randnum) {
+          status.setText("Too High");
+          status.setFont(new java.awt.Font("MV Boli", java.awt.Font.BOLD, 30));
+          status.setForeground(new java.awt.Color(253, 233, 180));
+          status.setPreferredSize(new Dimension(200, 50));
+        } else if (textToint < randnum) {
+          status.setText("Too Low");
+          status.setFont(new java.awt.Font("MV Boli", java.awt.Font.BOLD, 30));
+          status.setForeground(new java.awt.Color(253, 233, 180));
+          status.setPreferredSize(new Dimension(200, 50));
+        }
+      } catch (NumberFormatException e) {
+        status.setText("Please input number between 1 and 10");
+        status.setFont(new java.awt.Font("MV Boli", java.awt.Font.BOLD, 30));
+        status.setForeground(new java.awt.Color(253, 233, 180));
+        status.setPreferredSize(new Dimension(200, 50));
+      }
     }
+    input.setText("");
+    scoringSystem.incrementAttempt();
+  }
+}
