@@ -68,4 +68,15 @@ public class ScoreFiles {
   }
  }
 
+ public void compareScore(String high_score, String current_score, String current_played_games) {
+  if (intScore(high_score) < intScore(current_score)) {
+   writeScoreAttempts(high_score, intScore(current_score), intScore(current_played_games));
+  } else if (intScore(high_score) == intScore(current_score)) {
+   // ATTEMPTION
+   if (intGames(high_score) > intGames(current_played_games)) {
+    writeScoreAttempts(high_score, intScore(current_score), intScore(current_played_games));
+   }
+  }
+ }
+
 }
