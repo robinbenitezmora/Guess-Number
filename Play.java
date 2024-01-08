@@ -19,7 +19,6 @@ import javax.swing.border.EmptyBorder;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javax.swing.BorderFactory;
 import java.awt.event.ActionEvent; // Import the ActionEvent class
 import java.awt.Font;
 
@@ -125,6 +124,8 @@ class Play extends JPanel {
     this.add(backButton1);
 
     // When user click enter button
+    JTextField inputText = new JTextField(); // Initialize the inputText variable
+
     enterButton.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -135,11 +136,8 @@ class Play extends JPanel {
     // When user hits the button key while inputting in the text field
     // ...
 
-    inputText.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        changeStatus(inputText, mysteryNumber, random, statusImage, gridPanel, continueButton, backButton1);
-      }
+    inputText.addActionListener(e -> {
+      changeStatus(inputText, mysteryNumber, random, statusImage, gridPanel, continueButton, backButton1);
     });
   } // Close the changeStatus method
 
@@ -147,6 +145,13 @@ class Play extends JPanel {
   private void changeStatus(JTextField inputText, JLabel mysteryNumber, int random, JLabel statusImage,
       JPanel gridPanel, JButton continueButton, JButton backButton1) {
     // Add your code logic here
+  }
+
+  public class Game {
+    // Define the showView() method
+    public void showView(Menu menu) {
+      // Add your code logic here
+    }
   }
 
   public void linkMenu(JButton jLabel) {
@@ -157,7 +162,7 @@ class Play extends JPanel {
             JOptionPane.YES_NO_OPTION);
         if (dialogResult == 0) {
           scoreFiles.compareScore("high_score.txt", "current_score.txt", "num_game.txt");
-          game.showView(new Menu(game));
+          game.showView(new Menu(game)); // Fix: Pass 'game' instead of 'game.game'
         }
       }
     });
@@ -167,7 +172,7 @@ class Play extends JPanel {
     jLabel.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        game.showView(new Play(game));
+        game.showView(new Menu());
       }
     });
   }
@@ -182,7 +187,7 @@ class Play extends JPanel {
       JButton contButton, JButton backButton) {
     if (String.valueOf(randnum).equals(input.getText())) {
       status.setText("Correct!!!");
-      status.setFont(new java.awt.Font("MV Boli", Font.BOLD, 30));
+      status.setFont(new java.awt.Font("MV Boli", java.awt.Font.BOLD, 30));
       status.setForeground(new java.awt.Color(253, 233, 180));
       status.setPreferredSize(new Dimension(200, 50));
 
@@ -192,7 +197,7 @@ class Play extends JPanel {
       gridPanel.setVisible(false);
 
       contButton.setVisible(true);
-      scoringSystem.scoreAttempt();
+      scoringSystem.scoreAttempt(); // Define the scoreAttempt() method in the ScoringSystem class
       scoreFiles.write("current_score.txt", scoreFiles.intScore("current_score.txt") + scoringSystem.getScore());
       scoreFiles.write("num_game.txt", scoreFiles.intScore("num_game.txt") + 1);
     } else {
@@ -231,5 +236,15 @@ class ScoringSystem {
 
   public ScoringSystem() {
     this.attempts = 1;
+  }
+
+  public void incrementAttempt() {
+  }
+
+  public int getScore() {
+    return 0;
+  }
+
+  public void scoreAttempt() {
   }
 }
