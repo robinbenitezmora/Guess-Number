@@ -225,3 +225,11 @@ class Play extends JPanel {
     scoringSystem.incrementAttempt();
   }
 }
+
+class ScoringSystem {
+  int score, attempts;
+
+  public ScoringSystem() {
+    this.attempts = 1;
+  }
+}
