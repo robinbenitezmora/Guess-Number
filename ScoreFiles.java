@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class ScoreFiles {
+class ScoreFiles {
 
  public String showScore(String filename) {
   String score = "0";
@@ -78,5 +78,4 @@ public class ScoreFiles {
    }
   }
  }
-
 }
