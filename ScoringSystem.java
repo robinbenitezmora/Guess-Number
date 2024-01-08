@@ -1,5 +1,5 @@
 
-public class ScoringSystem {
+class ScoringSystem {
  int score, attempts;
 
  public ScoringSystem() {
