@@ -121,11 +121,9 @@ class Play extends JPanel {
     backButton1.setAlignmentX(CENTER_ALIGNMENT);
     backButton1.setPreferredSize(new Dimension(200, 50));
     linkMenu(backButton1);
-    this.add(backButton1);
-
     // When user click enter button
-    JTextField inputText = new JTextField(); // Initialize the inputText variable
-
+    // Remove the duplicate declaration of inputText
+    enterButton = new JButton(); // Initialize enterButton
     enterButton.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -136,6 +134,8 @@ class Play extends JPanel {
     // When user hits the button key while inputting in the text field
     // ...
 
+    // Remove the duplicate declaration of inputText
+    JTextField inputText = new JTextField(); // Initialize inputText
     inputText.addActionListener(e -> {
       changeStatus(inputText, mysteryNumber, random, statusImage, gridPanel, continueButton, backButton1);
     });
@@ -162,7 +162,7 @@ class Play extends JPanel {
             JOptionPane.YES_NO_OPTION);
         if (dialogResult == 0) {
           scoreFiles.compareScore("high_score.txt", "current_score.txt", "num_game.txt");
-          game.showView(new Menu(game)); // Fix: Pass 'game' instead of 'game.game'
+          game.showView(new Menu()); // Fix: Pass 'Play.this' instead of 'game.game'
         }
       }
     });
@@ -186,15 +186,15 @@ class Play extends JPanel {
   void changeStatusGame(JTextField input, JLabel mysterynum, int randnum, JLabel status, JPanel gridJPanel,
       JButton contButton, JButton backButton) {
     if (String.valueOf(randnum).equals(input.getText())) {
+      JPanel gridPanel = new JPanel(); // Initialize gridPanel
+      gridPanel.setVisible(false);
+
       status.setText("Correct!!!");
       status.setFont(new java.awt.Font("MV Boli", java.awt.Font.BOLD, 30));
       status.setForeground(new java.awt.Color(253, 233, 180));
       status.setPreferredSize(new Dimension(200, 50));
 
       mysterynum.setText(input.getText());
-
-      JComponent gridPanel;
-      gridPanel.setVisible(false);
 
       contButton.setVisible(true);
       scoringSystem.scoreAttempt(); // Define the scoreAttempt() method in the ScoringSystem class
